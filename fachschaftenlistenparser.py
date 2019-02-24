@@ -25,9 +25,10 @@ formatters = {
 def formatter(key):
     return formatters.get(key, lambda n: n)
 
-list_url = 'https://wiki.kif.rocks/w/index.php?action=raw&title=Liste_unserer_Fachschaften'
+r = requests.get(
+        'https://wiki.kif.rocks/w/index.php?action=raw&title=Liste_unserer_Fachschaften'
+)
 
-r = requests.get(list_url)
 r.raise_for_status()
 
 wikitext = mwparserfromhell.parse(r.text, skip_style_tags=True)

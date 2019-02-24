@@ -13,6 +13,17 @@ def format_email(val):
     res = re.sub(r"\((strich|minus)\)", "-", res)
     return res
 
+# put more formatter functions here (yes really)
+
+# keep the formatters dict outside of the formatter function, if it's in the
+# function it will be re-built on each call, which isn't the most efficient
+formatters = {
+        'anschrift': format_anschrift,
+        'besucheradresse': format_anschrift,
+        'email': format_email,
+}
+def formatter(key):
+    return formatters.get(key, lambda n: n)
 
 list_url = 'https://wiki.kif.rocks/w/index.php?action=raw&title=Liste_unserer_Fachschaften'
 
@@ -30,10 +41,7 @@ for t in wikitext.filter_templates(matches=zeilen_matcher):
         val = param.value.strip()
         if not val: continue
         key = param.name.strip()
-        if key == 'anschrift': val = format_anschrift(val)
-        if key == 'besucheradresse': val = format_anschrift(val)
-        if key == 'email': val = format_email(val)
-        hs[key] = val
+        hs[key] = formatter(key)(val)
     res.append(hs)
 
 print(json.dumps(res))

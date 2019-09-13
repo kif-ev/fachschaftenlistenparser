@@ -11,7 +11,7 @@ def format_anschrift(address):
     """
     Returns a correctly formatted postal address
     """
-    return re.sub(r"<br>\n?", "\n", address)
+    return re.sub(r"<br/?>\n?", "\n", address)
 
 def format_email(address):
     """
